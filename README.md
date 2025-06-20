@@ -1,3 +1,4 @@
+
 # Zielona Alkaida Launcher
 
 Prosty launcher do Minecrafta napisany w C++ z wykorzystaniem **GLFW**, **ImGui** oraz **CMake**. Projekt kompatybilny z **Visual Studio 2022**.
@@ -32,6 +33,13 @@ cmake .. -G "Visual Studio 17 2022"
 3. **Otwórz projekt w Visual Studio** i ustaw `ZielonaAlkaidaLauncher` jako projekt startowy.
 
 4. **Uruchom projekt** (`F5`).
+
+---
+
+## ⚠️ Ważne
+
+- Plik czcionki **arialbd.ttf** oraz plik tła **backround.jpg** **muszą znajdować się w tym samym katalogu co plik `.exe`**.
+- Program należy uruchamiać **bezpośrednio przez wygenerowany plik `.exe`**, a nie przez Visual Studio. Uruchomienie przez Visual Studio może spowodować problemy z lokalizacją plików i program może nie działać poprawnie. (Naprawa tego problemu jest planowana).
 
 ---
 
