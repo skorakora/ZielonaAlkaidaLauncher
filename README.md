@@ -53,4 +53,4 @@ ZielonaAlkaidaLauncher/
 
 ## 🛠️ Autor
 
-Daniel Skóski
+Daniel Skórski
