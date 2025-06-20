@@ -18,7 +18,7 @@ Prosty launcher do Minecrafta napisany w C++ z wykorzystaniem **GLFW**, **ImGui*
 1. **Sklonuj repozytorium z submodułami**:
 
 ```bash
-git clone --recurse-submodules <repo-url>
+git clone --recurse-submodules https://github.com/skorakora/ZielonaAlkaidaLauncher
 cd ZielonaAlkaidaLauncher
 ```
 
