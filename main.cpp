@@ -8,6 +8,8 @@
 #include <iostream>
 #include <string>
 
+GLFWwindow* window = nullptr;
+
 GLuint LoadTextureFromFile(const char* filename, int& width, int& height) {
     unsigned char* image_data = stbi_load(filename, &width, &height, NULL, 4);
     if (image_data == NULL) {
@@ -28,13 +30,47 @@ GLuint LoadTextureFromFile(const char* filename, int& width, int& height) {
     return texture;
 }
 
+void ShutdownGUI() {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+    if (window) {
+        glfwDestroyWindow(window);
+        window = nullptr;
+    }
+    glfwTerminate();
+    while (true);
+}
+
+// Funkcje uruchamiania z zamknięciem GUI
+void LaunchClasic(const std::string& nickname) {
+    if (nickname.empty()) {
+        std::cerr << "Error: empty nickname\n";
+        return;
+    }
+    std::cout << "Launching Zielona Alkaida Clasic\n";
+    std::cout << "Nick: " << nickname << "\n";
+    ShutdownGUI();
+    while (true);
+}
+
+void Launch2Edition(const std::string& nickname) {
+    if (nickname.empty()) {
+        std::cerr << "Error: empty nickname\n";
+        return;
+    }
+    std::cout << "Launching Zielona Alkaida Second Edition\n";
+    std::cout << "Nick: " << nickname << "\n";
+    ShutdownGUI();
+}
+
 int main() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW\n";
         return -1;
     }
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Minecraft Launcher", nullptr, nullptr);
+    window = glfwCreateWindow(1280, 720, "Minecraft Launcher", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window\n";
         glfwTerminate();
@@ -48,10 +84,8 @@ int main() {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
 
-    // Dodajemy czcionki
-    io.Fonts->AddFontDefault(); // domyślna mała czcionka
-
-    ImFont* bigFont = io.Fonts->AddFontFromFileTTF("arialbd.ttf", 150.0f); // bardzo duża czcionka
+    io.Fonts->AddFontDefault();
+    ImFont* bigFont = io.Fonts->AddFontFromFileTTF("arialbd.ttf", 150.0f);
     if (!bigFont) {
         std::cerr << "Nie udało się załadować czcionki arialbd.ttf\n";
     }
@@ -97,7 +131,7 @@ int main() {
             IM_COL32(0, 0, 0, 220)
         );
 
-        // Nagłówek — tylko on ma dużą czcionkę
+        // Nagłówek
         {
             ImGui::SetNextWindowPos(ImVec2(0, 0));
             ImGui::SetNextWindowSize(ImVec2((float)win_width, win_height * 0.5f));
@@ -117,7 +151,7 @@ int main() {
             ImGui::End();
         }
 
-        // Pole na nick — domyślna czcionka
+        // Pole na nick
         {
             ImGui::SetNextWindowPos(ImVec2(20, win_height - 120));
             ImGui::SetNextWindowSize(ImVec2(300, 100));
@@ -133,7 +167,7 @@ int main() {
             ImGui::End();
         }
 
-        // Przyciski — domyślna czcionka
+        // Przyciski
         {
             ImGui::SetNextWindowPos(ImVec2(win_width - 320, win_height - 160));
             ImGui::SetNextWindowSize(ImVec2(300, 140));
@@ -145,16 +179,16 @@ int main() {
                 ImGuiWindowFlags_NoBackground);
 
             if (ImGui::Button("Zielona alkaida clasic", ImVec2(280, 50))) {
-                std::cout << "Start: Zielona alkaida clasic | Nick: " << nickname << "\n";
+                LaunchClasic(nickname);
             }
             if (ImGui::Button("Zielona alkaida edycja 2", ImVec2(280, 50))) {
-                std::cout << "Start: Zielona alkaida edycja 2 | Nick: " << nickname << "\n";
+                Launch2Edition(nickname);
             }
 
             ImGui::End();
         }
 
-        // Stopka — domyślna czcionka
+        // Stopka
         {
             ImGui::SetNextWindowPos(ImVec2(10, win_height - 30));
             ImGui::SetNextWindowSize(ImVec2((float)win_width - 20, 20));
@@ -181,10 +215,8 @@ int main() {
         glfwSwapBuffers(window);
     }
 
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-    glfwDestroyWindow(window);
-    glfwTerminate();
+    // Jeśli użytkownik sam zamknął okno, posprzątaj:
+    if (window) ShutdownGUI();
+
     return 0;
 }
